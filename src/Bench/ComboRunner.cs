@@ -10,15 +10,17 @@ namespace RealKIEBench;
 /// <summary>One (task LM, reflection LM) combo: GEPA compile + held-out test eval.</summary>
 public class ComboRunner
 {
+    private readonly Provider _provider;
     private readonly string _apiKey;
     private readonly List<string> _entityTypes;
     private readonly List<Example> _trainset;
     private readonly List<Example> _testset;
     private readonly ILogger _logger;
 
-    public ComboRunner(string apiKey, List<string> entityTypes,
+    public ComboRunner(Provider provider, string apiKey, List<string> entityTypes,
         List<Example> trainset, List<Example> testset, ILogger logger)
     {
+        _provider = provider;
         _apiKey = apiKey;
         _entityTypes = entityTypes;
         _trainset = trainset;
@@ -29,7 +31,7 @@ public class ComboRunner
     /// <summary>Default-instruction baseline for one task LM.</summary>
     public async Task<PerTypeSpanCorpus> ComputeBaselineAsync(ModelChoice task)
     {
-        var lm = new AnthropicLM(_apiKey, model: task.Slug, maxTokens: 4096);
+        var lm = _provider.Build(_apiKey, task);
         var student = new Predict<S1ExtractionSig>(lm, _logger);
         return await EvaluateCorpusAsync(student, $"baseline[{task.DisplayName}]");
     }
@@ -38,8 +40,8 @@ public class ComboRunner
     public async Task<(PerTypeSpanCorpus Optimized, string Instruction)> CompileAndEvaluateAsync(
         ModelChoice task, ModelChoice reflect)
     {
-        var taskLM = new AnthropicLM(_apiKey, model: task.Slug, maxTokens: 4096);
-        var reflectionLM = new AnthropicLM(_apiKey, model: reflect.Slug, maxTokens: 4096);
+        var taskLM = _provider.Build(_apiKey, task);
+        var reflectionLM = _provider.Build(_apiKey, reflect);
 
         var student = new Predict<S1ExtractionSig>(taskLM, _logger);
         var metric = F1Metric.Build(_entityTypes);
@@ -64,7 +66,7 @@ public class ComboRunner
         return (corpus, optimized.State.Instruction);
     }
 
-    // Sequential to preserve Anthropic rate-limit headroom across concurrent combos.
+    // Sequential to preserve API rate-limit headroom across concurrent combos.
     private async Task<PerTypeSpanCorpus> EvaluateCorpusAsync(Module program, string tag)
     {
         var corpus = new PerTypeSpanCorpus();

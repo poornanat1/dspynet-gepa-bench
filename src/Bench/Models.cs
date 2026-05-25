@@ -38,9 +38,4 @@ public record ComboResult(
     string FinalInstruction,
     string? Error);
 
-public record ModelChoice(string Slug, string DisplayName)
-{
-    public static readonly ModelChoice Haiku = new("claude-haiku-4-5", "Haiku 4.5");
-    public static readonly ModelChoice Sonnet = new("claude-sonnet-4-6", "Sonnet 4.6");
-    public static readonly ModelChoice Opus = new("claude-opus-4-7", "Opus 4.7");
-}
+public record ModelChoice(string Slug, string DisplayName);

@@ -6,7 +6,7 @@
 - how the choice of task LM vs reflection LM moves the result
 - whether a cheap task LM with a strong reflection LM is competitive with an all-strong setup
 
-Three Anthropic models, six combinations, one dataset.
+One dataset, six combinations, three tiers per LM provider — Anthropic (Haiku → Sonnet → Opus) and Mistral (Small → Medium → Large) built in. See [setup](setup.md) for provider details.
 
 ## Why this task
 

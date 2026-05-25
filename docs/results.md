@@ -1,5 +1,7 @@
 # Results
 
+## Anthropic (Haiku / Sonnet / Opus)
+
 | Task LM | Reflect LM | Baseline | GEPA | Δ (pp) |
 |---|---|---:|---:|---:|
 | Haiku 4.5 | Haiku 4.5 | 0.386 | 0.616 | +23.0 |
@@ -9,9 +11,9 @@
 | Sonnet 4.6 | Opus 4.7 | 0.513 | 0.555 | +4.2 |
 | Opus 4.7 | Opus 4.7 | 0.641 | 0.703 | +6.2 |
 
-Per-entity-type tables and the full GEPA-written instructions are in [`../results/benchmark.md`](../results/benchmark.md).
+Per-entity-type tables and final GEPA-written instructions: [`../results/benchmark-anthropic.md`](../results/benchmark-anthropic.md).
 
-## Observations
+### Observations (Anthropic)
 
 **Haiku rows are clustered.** HH=0.616, HS=0.622, HO=0.622 — within 0.6 pp on 50 test docs. Reflection-model choice is not a primary driver in this slice when the task LM is Haiku.
 
@@ -23,9 +25,13 @@ Per-entity-type tables and the full GEPA-written instructions are in [`../result
 
 **Three types stayed at 0.0 across every combo.** Risk Clauses, Title of Security Registered, Prospectus Summary (1st Para). All three have multi-sentence prose-block gold annotations; exact-string match against a paraphrased extraction scores zero. Metric limitation, not a model one — token-F1 or partial-match would change the numbers.
 
+## Mistral (Small / Medium / Large)
+
+_Full 6-combo run in progress. Numbers will land in [`../results/benchmark-mistral.md`](../results/benchmark-mistral.md) and be summarized here when the run completes._
+
 ## Caveats
 
-- Single seed, 50 test docs, 6 combos. No confidence intervals.
+- Single seed, 50 test docs, 6 combos per provider. No confidence intervals.
 - `s1_truncated` is a derivative of RealKIE — chunked passages, not full documents. Numbers are not comparable to the RealKIE paper baselines.
 - Exact-string match. See the three unscoreable types above.
 - Wall-clock and dollar cost not measured per combo.

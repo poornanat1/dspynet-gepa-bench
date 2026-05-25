@@ -30,12 +30,17 @@ Per entity type, TP/FP/FN accumulated across all test docs (set-membership over 
 | Seed | 42 |
 | Runs per combo | 1 |
 
-## Models
+## Providers
 
-| Slug | Display |
-|---|---|
-| `claude-haiku-4-5` | Haiku 4.5 |
-| `claude-sonnet-4-6` | Sonnet 4.6 |
-| `claude-opus-4-7` | Opus 4.7 |
+Any LM provider can be plugged in via the `Provider` abstraction ([`src/Bench/Provider.cs`](../src/Bench/Provider.cs)). Two are built in; add more by following the Mistral pattern (base URL + tier list + factory).
 
-Six combinations = `{H, S, O}_task × {H, S, O}_reflect` minus the three cases where the reflection LM is weaker than the task LM.
+| Provider | Env key | Tiers (weak → strong) | API |
+|---|---|---|---|
+| Anthropic | `ANTHROPIC_API_KEY` | Haiku 4.5 → Sonnet 4.6 → Opus 4.7 | `api.anthropic.com` (direct) |
+| Mistral | `MISTRAL_API_KEY` | `mistral-small-latest` → `…-medium-latest` → `…-large-latest` | `api.mistral.ai/v1` (OpenAI-compat) |
+
+The matrix structure is fixed: six combinations = `{weak, mid, strong}_task × {weak, mid, strong}_reflect` minus the three task-stronger-than-reflect cases (no upside from a weaker reflection model).
+
+Provider selection (in order): `--provider=<name>` CLI arg → `$BENCH_PROVIDER` → auto-pick the first provider whose env key is set in `.env`.
+
+Output file is `results/benchmark-<provider>.md`.

@@ -1,8 +1,8 @@
-# RealKIE-bench
+# dspynet-gepa-bench
 
-[GEPA](https://github.com/poornanat1/DSpyNet/tree/fix/gepa-parity) (from [DSpyNet](https://github.com/al322se/DSpyNet), open as [PR #2](https://github.com/al322se/DSpyNet/pull/2)) on SEC S-1 key-information extraction from [RealKIE](https://arxiv.org/abs/2403.20101), six (task LM, reflection LM) combinations.
+[GEPA](https://github.com/poornanat1/DSpyNet/tree/fix/gepa-parity) (from [DSpyNet](https://github.com/al322se/DSpyNet), open as [PR #2](https://github.com/al322se/DSpyNet/pull/2)) on SEC S-1 key-information extraction from [RealKIE](https://arxiv.org/abs/2403.20101). Six (task LM, reflection LM) combinations per provider; Anthropic and Mistral built in.
 
-## Headline
+## Headline (Anthropic)
 
 | Task LM | Reflect LM | Baseline | GEPA | Δ (pp) |
 |---|---|---:|---:|---:|
@@ -13,22 +13,31 @@
 | Sonnet 4.6 | Opus 4.7 | 0.513 | 0.555 | +4.2 |
 | Opus 4.7 | Opus 4.7 | 0.641 | 0.703 | +6.2 |
 
+Mistral matrix in flight; see [`docs/results.md`](docs/results.md).
+
 ## Docs
 
 - [Purpose](docs/purpose.md) — what we're measuring and why
-- [Setup](docs/setup.md) — dataset, task, metric, GEPA config, models
+- [Setup](docs/setup.md) — dataset, task, metric, GEPA config, providers
 - [Results](docs/results.md) — matrix + observations + caveats
 
-Per-entity-type tables and the full GEPA-written instructions: [`results/benchmark.md`](results/benchmark.md).
+Per-entity-type tables and the GEPA-written instructions: [`results/benchmark-<provider>.md`](results/).
 
 ## Running
 
 ```
-echo "ANTHROPIC_API_KEY=sk-ant-..." > .env
+# .env
+ANTHROPIC_API_KEY=sk-ant-...        # for the Anthropic matrix
+MISTRAL_API_KEY=...                  # for the Mistral matrix
+
+# data
 aws s3 cp s3://project-fruitfly/s1_truncated/train.csv data/s1_train.csv \
   --endpoint-url=https://s3.us-east-2.wasabisys.com --no-sign-request
 aws s3 cp s3://project-fruitfly/s1_truncated/test.csv  data/s1_test.csv \
   --endpoint-url=https://s3.us-east-2.wasabisys.com --no-sign-request
-dotnet run                  # full 6-combo matrix
-dotnet run -- --smoke       # 1 combo, 10 train / 5 test
+
+# matrix (auto-picks provider from env, or use --provider=)
+dotnet run                              # full 6-combo matrix
+dotnet run -- --provider=mistral        # explicit provider
+dotnet run -- --smoke                   # 1 combo, 10 train / 5 test
 ```
