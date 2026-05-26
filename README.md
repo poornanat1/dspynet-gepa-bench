@@ -13,7 +13,18 @@
 | Sonnet 4.6 | Opus 4.7 | 0.513 | 0.555 | +4.2 |
 | Opus 4.7 | Opus 4.7 | 0.641 | 0.703 | +6.2 |
 
-Mistral matrix in flight; see [`docs/results.md`](docs/results.md).
+## Headline (Mistral)
+
+| Task LM | Reflect LM | Baseline | GEPA | Δ (pp) |
+|---|---|---:|---:|---:|
+| Small 4 | Small 4 | 0.358 | 0.370 | +1.2 |
+| Small 4 | Medium 3.5 | 0.358 | 0.528 | +17.0 |
+| Small 4 | Large 2512 | 0.358 | 0.458 | +10.0 |
+| Medium 3.5 | Medium 3.5 | 0.370 | 0.461 | +9.1 |
+| Medium 3.5 | Large 2512 | 0.370 | 0.468 | +9.8 |
+| Large 2512 | Large 2512 | 0.396 | 0.538 | +14.2 |
+
+Full observations and caveats: [`docs/results.md`](docs/results.md).
 
 ## Docs
 
