@@ -1,6 +1,6 @@
 # Purpose
 
-[DSpyNet](https://github.com/al322se/DSpyNet) has a GEPA implementation (Genetic-Pareto reflective prompt evolution; see [`fix/gepa-parity`](https://github.com/poornanat1/DSpyNet/tree/fix/gepa-parity), open as [PR #2](https://github.com/al322se/DSpyNet/pull/2)). This repo runs it on a non-toy extraction task to measure:
+[DSpyNet](https://github.com/al322se/DSpyNet) has a GEPA implementation (Genetic-Pareto reflective prompt evolution; merged via [PR #2](https://github.com/al322se/DSpyNet/pull/2)). This repo runs it on a non-toy extraction task to measure:
 
 - whether the optimizer improves a baseline prompt on a real dataset
 - how the choice of task LM vs reflection LM moves the result

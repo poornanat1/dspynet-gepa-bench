@@ -44,3 +44,7 @@ The matrix structure is fixed: six combinations = `{weak, mid, strong}_task × {
 Provider selection (in order): `--provider=<name>` CLI arg → `$BENCH_PROVIDER` → auto-pick the first provider whose env key is set in `.env`.
 
 Output file is `results/benchmark-<provider>.md`.
+
+## LM call config
+
+Calls go out with provider defaults — no `temperature` or `reasoning_effort` overrides. For Mistral that means default temperature (~0.7) and, on hybrid models (Small 4 and Medium 3.5), reasoning enabled by default. Baseline-to-GEPA deltas therefore include both prompt-quality lift and any noise from sampling/reasoning variance across the 50 test docs.

@@ -1,6 +1,6 @@
 # dspynet-gepa-bench
 
-[GEPA](https://github.com/poornanat1/DSpyNet/tree/fix/gepa-parity) (from [DSpyNet](https://github.com/al322se/DSpyNet), open as [PR #2](https://github.com/al322se/DSpyNet/pull/2)) on SEC S-1 key-information extraction from [RealKIE](https://arxiv.org/abs/2403.20101). Six (task LM, reflection LM) combinations per provider; Anthropic and Mistral built in.
+[GEPA](https://github.com/al322se/DSpyNet) (from [DSpyNet](https://github.com/al322se/DSpyNet), merged via [PR #2](https://github.com/al322se/DSpyNet/pull/2)) on SEC S-1 key-information extraction from [RealKIE](https://arxiv.org/abs/2403.20101). Six (task LM, reflection LM) combinations per provider; Anthropic and Mistral built in.
 
 ## Headline (Anthropic)
 
