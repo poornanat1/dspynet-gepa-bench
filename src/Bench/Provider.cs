@@ -23,12 +23,23 @@ public record Provider(
     public static readonly Provider Mistral = new(
         Name: "mistral",
         EnvKey: "MISTRAL_API_KEY",
-        Build: (apiKey, mc) => new OpenAICompatLM("https://api.mistral.ai/v1", apiKey, mc.Slug, maxTokens: 4096),
+        // Per-tier minimum gap between calls — Mistral's RPS limits drop sharply at the upper tiers.
+        Build: (apiKey, mc) =>
+        {
+            int minGapMs = mc.Slug switch
+            {
+                var s when s.StartsWith("mistral-large")  => 1500,
+                var s when s.StartsWith("mistral-medium") => 1000,
+                _                                         => 600,
+            };
+            return new OpenAICompatLM("https://api.mistral.ai/v1", apiKey, mc.Slug, maxTokens: 2048, minGapMs: minGapMs);
+        },
+        // Pinned to dated slugs: avoids -latest alias 503s, makes results reproducible.
         Tiers: new[]
         {
-            new ModelChoice("mistral-small-latest",  "Mistral Small"),
-            new ModelChoice("mistral-medium-latest", "Mistral Medium"),
-            new ModelChoice("mistral-large-latest",  "Mistral Large"),
+            new ModelChoice("mistral-small-2603",    "Mistral Small 4"),
+            new ModelChoice("mistral-medium-3-5",    "Mistral Medium 3.5"),
+            new ModelChoice("mistral-large-2512",    "Mistral Large (2512)"),
         });
 
     // Add more providers (Moonshot Kimi K2, OpenRouter, Qwen) by following the Mistral pattern with their /v1 base URL.
